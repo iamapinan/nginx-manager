@@ -1,4 +1,4 @@
-# Enhanced Nginx Proxy Manager (All-in-One)
+# Nginx Manager
 
 A Nginx Proxy management tool with beautiful UI and easy-to-use interface, running Nginx and Next.js in a single container
 
@@ -12,5 +12,4 @@ A Nginx Proxy management tool with beautiful UI and easy-to-use interface, runni
 - **Config Editor**: Edit nginx.conf directly
 - **Auto Restart**: Automatically restart nginx when saving configurations
 - **Upload Limits**: Set maximum file upload size
-- **Thai Interface**: Easy to use with Thai language interface
 
