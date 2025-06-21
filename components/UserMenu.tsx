@@ -58,7 +58,7 @@ export function UserMenu() {
     return (
       <div className="flex items-center gap-2 px-3 py-2 bg-gray-50/80 rounded-lg border border-gray-200/50">
         <Loader2 className="w-4 h-4 animate-spin text-gray-400" />
-        <span className="text-sm text-gray-600">กำลังโหลด...</span>
+        <span className="text-sm text-gray-600">Loading...</span>
       </div>
     );
   }
@@ -87,7 +87,7 @@ export function UserMenu() {
           <div className="p-3 border-b border-gray-100">
             <div className="text-sm font-medium text-gray-900">{user.username}</div>
             <div className="text-sm text-gray-500">{user.email}</div>
-            <div className="text-xs text-blue-600 mt-1 capitalize">สิทธิ์: {user.role}</div>
+            <div className="text-xs text-blue-600 mt-1 capitalize">Role: {user.role}</div>
           </div>
           
           <div className="p-2">
@@ -101,7 +101,7 @@ export function UserMenu() {
               ) : (
                 <LogOut className="w-4 h-4" />
               )}
-              <span className="text-sm">ออกจากระบบ</span>
+              <span className="text-sm">Logout</span>
             </button>
           </div>
         </div>

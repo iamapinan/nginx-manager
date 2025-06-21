@@ -63,7 +63,7 @@ export default function UsersPage() {
   };
 
   const handleDeleteUser = async (id: number) => {
-    if (!confirm('คุณต้องการลบผู้ใช้นี้ใช่หรือไม่?')) return;
+    if (!confirm('Are you sure you want to delete this user?')) return;
 
     try {
       const response = await fetch(`/api/users/${id}`, {
@@ -74,17 +74,17 @@ export default function UsersPage() {
         fetchUsers();
       } else {
         const data = await response.json();
-        alert(data.error || 'เกิดข้อผิดพลาดในการลบผู้ใช้');
+        alert(data.error || 'Error deleting user');
       }
     } catch (error) {
       console.error('Error deleting user:', error);
-      alert('เกิดข้อผิดพลาดในการลบผู้ใช้');
+      alert('Error deleting user');
     }
   };
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return '-';
-    return new Date(dateString).toLocaleString('th-TH');
+    return new Date(dateString).toLocaleString('en-US');
   };
 
   const getRoleColor = (role: string) => {
@@ -108,8 +108,8 @@ export default function UsersPage() {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="p-4 bg-red-100 rounded-lg mb-4">
-            <h2 className="text-lg font-semibold text-red-800 mb-2">ไม่มีสิทธิ์เข้าถึง</h2>
-            <p className="text-red-600">คุณต้องเป็นผู้ดูแลระบบเพื่อเข้าถึงหน้านี้</p>
+            <h2 className="text-lg font-semibold text-red-800 mb-2">Access Denied</h2>
+            <p className="text-red-600">You must be an administrator to access this page</p>
           </div>
         </div>
       </div>
@@ -125,8 +125,8 @@ export default function UsersPage() {
             <Users className="w-6 h-6 text-blue-600" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">จัดการผู้ใช้</h1>
-            <p className="text-sm text-gray-600">จัดการบัญชีผู้ใช้ในระบบ</p>
+            <h1 className="text-2xl font-bold text-gray-900">User Management</h1>
+            <p className="text-sm text-gray-600">Manage user accounts in the system</p>
           </div>
         </div>
         <button
@@ -134,7 +134,7 @@ export default function UsersPage() {
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
           <Plus className="w-4 h-4" />
-          เพิ่มผู้ใช้
+          Add User
         </button>
       </div>
 
@@ -145,22 +145,22 @@ export default function UsersPage() {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  ผู้ใช้
+                  User
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  บทบาท
+                  Role
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  สถานะ
+                  Status
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  เข้าสู่ระบบล่าสุด
+                  Last Login
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  วันที่สร้าง
+                  Created
                 </th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  การจัดการ
+                  Actions
                 </th>
               </tr>
             </thead>
@@ -176,13 +176,13 @@ export default function UsersPage() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${getRoleColor(user.role)}`}>
                       <Shield className="w-3 h-3" />
-                      {user.role === 'admin' ? 'ผู้ดูแลระบบ' : 'ผู้ใช้'}
+                      {user.role === 'admin' ? 'Administrator' : 'User'}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(user.is_active)}`}>
                       {user.is_active ? <UserCheck className="w-3 h-3" /> : <UserX className="w-3 h-3" />}
-                      {user.is_active ? 'ใช้งาน' : 'ไม่ใช้งาน'}
+                      {user.is_active ? 'Active' : 'Inactive'}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -217,8 +217,8 @@ export default function UsersPage() {
       {users.length === 0 && (
         <div className="text-center py-12">
           <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">ไม่พบผู้ใช้</h3>
-          <p className="text-gray-500">เริ่มต้นโดยเพิ่มผู้ใช้ใหม่</p>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">No Users Found</h3>
+          <p className="text-gray-500">Get started by adding a new user</p>
         </div>
       )}
 
@@ -282,10 +282,10 @@ function UserModal({ user, isOpen, onClose, onSuccess }: UserModalProps) {
       if (response.ok) {
         onSuccess();
       } else {
-        setError(data.error || 'เกิดข้อผิดพลาด');
+        setError(data.error || 'An error occurred');
       }
     } catch (error) {
-      setError('เกิดข้อผิดพลาดในการเชื่อมต่อ');
+      setError('Connection error');
     } finally {
       setLoading(false);
     }
@@ -297,13 +297,13 @@ function UserModal({ user, isOpen, onClose, onSuccess }: UserModalProps) {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-lg max-w-md w-full p-6">
         <h2 className="text-lg font-semibold mb-4">
-          {user ? 'แก้ไขผู้ใช้' : 'เพิ่มผู้ใช้ใหม่'}
+          {user ? 'Edit User' : 'Add New User'}
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              ชื่อผู้ใช้
+              Username
             </label>
             <input
               type="text"
@@ -316,7 +316,7 @@ function UserModal({ user, isOpen, onClose, onSuccess }: UserModalProps) {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              อีเมล
+              Email
             </label>
             <input
               type="email"
@@ -329,7 +329,7 @@ function UserModal({ user, isOpen, onClose, onSuccess }: UserModalProps) {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              รหัสผ่าน {user && '(ไม่ต้องใส่หากไม่ต้องการเปลี่ยน)'}
+              Password {user && '(leave empty to keep current password)'}
             </label>
             <input
               type="password"
@@ -342,15 +342,15 @@ function UserModal({ user, isOpen, onClose, onSuccess }: UserModalProps) {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              บทบาท
+              Role
             </label>
             <select
               value={formData.role}
               onChange={(e) => setFormData({ ...formData, role: e.target.value as 'admin' | 'user' })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
-              <option value="user">ผู้ใช้</option>
-              <option value="admin">ผู้ดูแลระบบ</option>
+              <option value="user">User</option>
+              <option value="admin">Administrator</option>
             </select>
           </div>
 
@@ -363,7 +363,7 @@ function UserModal({ user, isOpen, onClose, onSuccess }: UserModalProps) {
               className="mr-2"
             />
             <label htmlFor="is_active" className="text-sm font-medium text-gray-700">
-              ใช้งาน
+              Active
             </label>
           </div>
 
@@ -379,14 +379,14 @@ function UserModal({ user, isOpen, onClose, onSuccess }: UserModalProps) {
               onClick={onClose}
               className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
             >
-              ยกเลิก
+              Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
               className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
             >
-              {loading ? 'กำลังบันทึก...' : (user ? 'อัพเดท' : 'เพิ่ม')}
+              {loading ? 'Saving...' : (user ? 'Update' : 'Add')}
             </button>
           </div>
         </form>
