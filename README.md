@@ -2,6 +2,8 @@
 
 A Nginx Proxy management tool with beautiful UI and easy-to-use interface, running Nginx and Next.js in a single container
 
+![screenshot](screenshot.png)
+
 ## Features
 
 - **All-in-One Container**: Nginx and Next.js in a single container
