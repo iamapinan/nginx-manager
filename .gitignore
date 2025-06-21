@@ -1,0 +1,17 @@
+node_modules
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+data/*
+nginx-config/*
+.next
+package-lock.json
+bun.lockb
+s3.yml
+app.yml
+proxy.yml
+simple-deploy.sh
+setup.sh
+rebuild.sh
