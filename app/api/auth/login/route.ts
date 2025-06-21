@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { authenticateUser, createSession } from '@/lib/auth';
+import { authenticateUser, createSessionToken } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,10 +21,11 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Create session
-    await createSession(user.id);
+    // Create session token
+    const { token: sessionToken, expiresAt } = await createSessionToken(user.id);
     
-    return NextResponse.json({
+    // Create response with cookie
+    const response = NextResponse.json({
       message: 'เข้าสู่ระบบสำเร็จ',
       user: {
         id: user.id,
@@ -33,6 +34,17 @@ export async function POST(request: NextRequest) {
         role: user.role
       }
     });
+    
+    // Set session cookie
+    response.cookies.set('session', sessionToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      expires: expiresAt,
+      path: '/'
+    });
+    
+    return response;
     
   } catch (error) {
     console.error('Login error:', error);

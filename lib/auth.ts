@@ -25,7 +25,7 @@ export async function verifyPassword(password: string, hashedPassword: string): 
   return await bcrypt.compare(password, hashedPassword);
 }
 
-// Create session
+// Create session (for server components)
 export async function createSession(userId: number): Promise<string> {
   const db = getDatabase();
   const sessionToken = generateSessionToken();
@@ -34,7 +34,7 @@ export async function createSession(userId: number): Promise<string> {
   
   await db.createSession(userId, sessionToken, expiresAt.toISOString());
   
-  // Set cookie
+  // Set cookie (only for server components)
   cookies().set('session', sessionToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
@@ -44,6 +44,18 @@ export async function createSession(userId: number): Promise<string> {
   });
   
   return sessionToken;
+}
+
+// Create session without setting cookie (for API routes)
+export async function createSessionToken(userId: number): Promise<{ token: string; expiresAt: Date }> {
+  const db = getDatabase();
+  const sessionToken = generateSessionToken();
+  const expiresAt = new Date();
+  expiresAt.setDate(expiresAt.getDate() + 7); // 7 days
+  
+  await db.createSession(userId, sessionToken, expiresAt.toISOString());
+  
+  return { token: sessionToken, expiresAt };
 }
 
 // Get current user from session

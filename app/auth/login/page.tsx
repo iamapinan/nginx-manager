@@ -25,13 +25,14 @@ export default function LoginPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
+        credentials: 'include', // Important for cookies
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        router.push('/');
-        router.refresh();
+        // Force a hard redirect to ensure cookies are properly set
+        window.location.href = '/';
       } else {
         setError(data.error || 'Login failed');
       }

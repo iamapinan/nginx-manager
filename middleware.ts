@@ -26,11 +26,11 @@ const publicRoutes = [
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
-  // Skip middleware for static files
+  // Skip middleware for static files and Next.js internals
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/favicon.ico') ||
-    pathname.includes('.')
+    pathname.includes('.') && !pathname.startsWith('/api/')  // Allow API routes with dots
   ) {
     return NextResponse.next();
   }
@@ -52,7 +52,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
   
-  // Check for session token - simple check without database validation
+  // Check for session token
   const sessionToken = request.cookies.get('session')?.value;
   
   if (!sessionToken) {
@@ -73,7 +73,6 @@ export const config = {
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
-     * - api (API routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
