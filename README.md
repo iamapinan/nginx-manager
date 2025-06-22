@@ -6,27 +6,27 @@ A modern, web-based Nginx reverse proxy manager, designed to simplify the manage
 
 ## Features
 
-### 🚀 **Core Functionality**
+### **Core Functionality**
 - **Proxy Host Management**: Create, edit, and delete proxy hosts with custom configurations
 - **SSL Certificate Management**: Automatic SSL certificate generation and renewal with Let's Encrypt integration
 - **Upstream Management**: Configure and manage upstream servers for load balancing
 - **Real-time Configuration**: Live Nginx configuration editing with validation
 - **Status Monitoring**: Real-time Nginx service status monitoring
 
-### 🔒 **Security & Authentication**
+### **Security & Authentication**
 - User authentication system with role-based access control
 - Secure session management
 - Protected API routes
 - Admin and user role permissions
 
-### 🎨 **Modern Interface**
+### **Modern Interface**
 - Clean, responsive design built with Tailwind CSS
 - Real-time updates and status indicators
 - Intuitive dashboard with statistics
 - Dark/light theme support
 - Mobile-friendly interface
 
-### ⚙️ **Advanced Features**
+### **Advanced Features**
 - Automatic Nginx configuration generation
 - Configuration validation before applying changes
 - Backup and restore functionality
@@ -36,9 +36,8 @@ A modern, web-based Nginx reverse proxy manager, designed to simplify the manage
 
 ## Technology Stack
 
-- **Frontend**: Next.js 14, React 18, TypeScript
-- **Styling**: Tailwind CSS
-- **Database**: SQLite with custom database layer
+- **Frontend**: Next.js, React, TypeScript, Tailwind CSS
+- **Backend**: Node.js, Express, SQLite
 - **Authentication**: Custom JWT-based authentication
 - **Server**: Nginx, Supervisor, Certbot
 - **Containerization**: Docker, Docker Compose
@@ -48,7 +47,7 @@ A modern, web-based Nginx reverse proxy manager, designed to simplify the manage
 ### Prerequisites
 
 - Docker and Docker Compose
-- Node.js 18+ (for development)
+- Node.js
 - Git
 
 ### Installation with Docker (Recommended)
@@ -267,7 +266,7 @@ This project is licensed under the GNU General Public License v3.0 - see the [LI
 
 ## Acknowledgments
 
-- Built with ❤️ by [iamapinan](https://iamapinan.com)
+- Built with ❤️ by [iamapinan](https://github.com/iamapinan)
 - SSL certificates provided by Let's Encrypt
 - Icons by Lucide React
 

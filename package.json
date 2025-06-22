@@ -2,6 +2,13 @@
   "name": "nginx-manager",
   "description": "A modern, web-based Nginx reverse proxy manager, designed to simplify the management of proxy hosts, SSL certificates, and upstream servers through an intuitive interface.",
   "version": "2.0.2",
+  "author": "Apinan Woratrakun <iamapinan@gmail.com>",
+  "license": "GPL-3.0",
+  "homepage": "https://github.com/iamapinan/nginx-manager",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iamapinan/nginx-manager.git"
+  },
   "private": true,
   "scripts": {
     "dev": "next dev",
