@@ -1,6 +1,7 @@
 {
   "name": "nginx-manager",
-  "version": "1.0.0",
+  "description": "A modern, web-based Nginx reverse proxy manager, designed to simplify the management of proxy hosts, SSL certificates, and upstream servers through an intuitive interface.",
+  "version": "2.0.2",
   "private": true,
   "scripts": {
     "dev": "next dev",

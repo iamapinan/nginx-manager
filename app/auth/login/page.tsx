@@ -145,7 +145,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <div className="text-center mt-6 text-sm text-gray-500">
-          <p>Nginx Manager v2.0.1</p>
+          <p>Nginx Manager v2.0.2</p>
           <p>© 2024 by <a href="https://iamapinan.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-700 transition-colors">iamapinan</a></p>
         </div>
       </div>
