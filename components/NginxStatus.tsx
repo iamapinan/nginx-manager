@@ -83,10 +83,10 @@ export function NginxStatusMini() {
       <button
         onClick={handleRestart}
         disabled={restarting || loading}
-        className="p-1.5 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 disabled:opacity-50"
+        className="flex-rows flex gap-2 p-1.5 text-red-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 disabled:opacity-50 text-xs"
         title={restarting ? 'Reloading Nginx...' : 'Reload Nginx'}
       >
-        <RefreshCw className={`w-4 h-4 ${restarting ? 'animate-spin' : ''}`} />
+        <RefreshCw className={`w-4 h-4 ${restarting ? 'animate-spin' : ''}`} /> Restart Nginx
       </button>
     </div>
   );

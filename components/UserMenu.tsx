@@ -1,52 +1,21 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { User, LogOut, Settings, Loader2 } from 'lucide-react';
-
-interface UserData {
-  id: number;
-  username: string;
-  email: string;
-  role: 'admin' | 'user';
-}
+import { User, LogOut, Loader2 } from 'lucide-react';
+import { useAuth } from '@/lib/auth-context';
 
 export function UserMenu() {
-  const [user, setUser] = useState<UserData | null>(null);
-  const [loading, setLoading] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
   const [logoutLoading, setLogoutLoading] = useState(false);
   const router = useRouter();
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
-  const fetchUser = async () => {
-    try {
-      const response = await fetch('/api/auth/me');
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.user);
-      }
-    } catch (error) {
-      console.error('Error fetching user:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { user, logout, loading } = useAuth();
 
   const handleLogout = async () => {
     setLogoutLoading(true);
     try {
-      const response = await fetch('/api/auth/logout', {
-        method: 'POST',
-      });
-
-      if (response.ok) {
-        router.push('/auth/login');
-        router.refresh();
-      }
+      await logout();
+      router.push('/auth/login');
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
@@ -71,7 +40,7 @@ export function UserMenu() {
     <div className="relative">
       <button
         onClick={() => setShowMenu(!showMenu)}
-        className="flex items-center gap-3 px-3 py-2 bg-gray-50/80 rounded-lg border border-gray-200/50 hover:bg-gray-100/80 transition-colors"
+        className="flex items-center gap-3 px-3 py-2 w-auto"
       >
         <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center">
           <User className="w-4 h-4 text-white" />

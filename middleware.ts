@@ -1,12 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// Protected routes that require authentication
-const protectedRoutes = [
-  '/',
-  '/upstreams',
-  '/certificates',
-  '/config',
-  '/users',
+// Protected API routes that require authentication
+const protectedApiRoutes = [
   '/api/sites',
   '/api/upstreams',
   '/api/certificates',
@@ -16,67 +11,43 @@ const protectedRoutes = [
   '/api/users'
 ];
 
-// Public routes that don't require authentication
-const publicRoutes = [
-  '/auth/login',
-  '/auth/register',
+// Public API routes that don't require authentication
+const publicApiRoutes = [
   '/api/auth'
 ];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
-  // Skip middleware for static files and Next.js internals
-  if (
-    pathname.startsWith('/_next') ||
-    pathname.startsWith('/favicon.ico') ||
-    pathname.includes('.') && !pathname.startsWith('/api/')  // Allow API routes with dots
-  ) {
+  // Only process API routes - let client-side handle page routing
+  if (!pathname.startsWith('/api/')) {
     return NextResponse.next();
   }
   
-  // Allow public routes
-  if (publicRoutes.some(route => pathname.startsWith(route))) {
+  // Allow public API routes
+  if (publicApiRoutes.some(route => pathname.startsWith(route))) {
     return NextResponse.next();
   }
   
-  // Check if route is protected
-  const isProtectedRoute = protectedRoutes.some(route => {
-    if (route === '/') {
-      return pathname === '/';
-    }
-    return pathname.startsWith(route);
-  });
+  // Check if API route is protected
+  const isProtectedApiRoute = protectedApiRoutes.some(route => 
+    pathname.startsWith(route)
+  );
   
-  if (!isProtectedRoute) {
+  if (!isProtectedApiRoute) {
     return NextResponse.next();
   }
   
-  // Check for session token
+  // Check for session token for protected API routes
   const sessionToken = request.cookies.get('session')?.value;
   
   if (!sessionToken) {
-    // Redirect to login for page requests
-    if (!pathname.startsWith('/api/')) {
-      return NextResponse.redirect(new URL('/auth/login', request.url));
-    }
-    // Return 401 for API requests
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   
-  // If session token exists, let the request through
-  // Session validation will be done by individual API routes/components
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    '/((?!_next/static|_next/image|favicon.ico).*)',
-  ],
+  matcher: ['/api/:path*'],
 }; 

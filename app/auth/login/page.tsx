@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { LogIn, Lock, User, Loader2 } from 'lucide-react';
+import { useAuth } from '@/lib/auth-context';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -12,35 +13,29 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
+  const { login, isAuthenticated } = useAuth();
+
+  // Redirect ถ้า login อยู่แล้ว
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push('/');
+    }
+  }, [isAuthenticated, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
-    try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-        credentials: 'include', // Important for cookies
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // Force a hard redirect to ensure cookies are properly set
-        window.location.href = '/';
-      } else {
-        setError(data.error || 'Login failed');
-      }
-    } catch (error) {
-      setError('Connection error');
-    } finally {
-      setLoading(false);
+    const result = await login(formData.username, formData.password);
+    
+    if (result.success) {
+      router.push('/');
+    } else {
+      setError(result.error || 'การเข้าสู่ระบบล้มเหลว');
     }
+    
+    setLoading(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +47,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+      <div className="w-full">
         {/* Logo and Title */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full mb-4">
@@ -127,7 +122,7 @@ export default function LoginPage() {
               {loading ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
-                  Logging in...
+                  กำลังเข้าสู่ระบบ...
                 </>
               ) : (
                 <>
