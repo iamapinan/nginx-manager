@@ -38,7 +38,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <div className="container mx-auto px-6 py-4">
             <div className="flex items-center justify-between text-sm text-gray-500">
               <div>
-                <span>Nginx Manager v2.0.1</span>
+                <span>Nginx Manager v2.0.2</span>
               </div>
               <div>
                 <span>© 2024 by </span>
